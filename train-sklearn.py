@@ -3,7 +3,7 @@
 import sys
 from sklearn.feature_extraction import DictVectorizer
 from sklearn.naive_bayes import MultinomialNB
-from sklearn.ensemble import RandomForestClassifier
+from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
 import numpy as np
 import argparse
 from joblib import dump
@@ -43,7 +43,7 @@ if __name__ == '__main__':
 	X_train = v.fit_transform(train_features)
 
 	clf = MultinomialNB()
-	clf.partial_fit(X_train, y_train, classes=classes)
+	clf.fit(X_train, y_train)
 
 	#Save classifier and DictVectorizer
 	dump(clf, model_file) 

@@ -21,3 +21,29 @@ For this we will play with different features extracted from the tokens in order
 The deliverables of this project include a comprehensive report detailing the methodologies employed and insights gained from the experimentation process. Additionally, the report includes the extract features function, which forms a critical component of the feature extraction process, along with any relevant code snippets.
 
 Overall, the objective of this project is to develop a proficient NERC system for drug name identification and classification, leveraging machine learning techniques to achieve accurate and efficient entity recognition within unstructured text data and test the importance of feature extraction in the context of NERC. 
+
+## Machine learning NERC
+After experimenting with multiple algorithms including Gradient Boosted Trees, Multinomial Naive Bayes, and Random Forest, we found that none of them could match or surpass the performance achieved by the Conditional Random Fields (CRF) for this particular task. While these alternative models achieved F1 scores of 25, 49, and 18 respectively, with Naive Bayes being the most successful among them, they still fell short compared to the CRF.
+
+Given the superior performance of the CRF, we decided to focus our efforts on optimizing its hyperparameters rather than switching to a different algorithm. We explored various hyperparameters, including different algorithms such as L-BFGS with L1/L2 regularization, SGD with L2-regularization, Averaged Perceptron, Passive Aggressive, and Adaptive Regularization of Weights (AROW), as documented in the [Documentation CRFSuite](https://www.chokkan.org/software/crfsuite/manual.html). However, none of these alternatives provided an improvement over the initial SGD with L2-regularization.
+
+Additionally, we fine-tuned the regularization parameter in an attempt to enhance the accuracy of our CRF model. Although we made a slight adjustment by reducing the regularization parameter from 0.1 to 0.08, we did not observe a significant difference in performance.
+
+Changing the mininum frequecy of a feature did not improve the performance of the model. 
+
+```python
+    # Use L2-regularized SGD and 1st-order dyad features.
+    trainer.select('l2sgd', 'crf1d')
+    
+    # This demonstrates how to list parameters and obtain their values.    
+    trainer.set('feature.minfreq', 1) # mininum frequecy of a feature to consider it
+    trainer.set('c2', 0.08)           # coefficient for L2 regularization previously to .1
+
+    print("Training with following parameters: ")
+    for name in trainer.params():
+        print (name, trainer.get(name), trainer.help(name), file=sys.stderr)
+        
+    # Start training and dump model to modelfile
+    trainer.train(modelfile, -1)
+
+```
