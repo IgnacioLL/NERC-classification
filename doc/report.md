@@ -122,6 +122,8 @@ def extract_features(tokens) :
 
 ## Experiments
 
+These are the accumulated step by step improvements made by each feature. 
+
 | Transformation Applied           | F1 Score (accumulated) (%) |
 |----------------------------------|--------------|
 | Lowercase                        | 56.7         |
@@ -130,7 +132,7 @@ def extract_features(tokens) :
 | First four characters of tokens  | 71.7         |
 | Number of capital characters     | 74.1         |
 
-|             |  tp | fp |  fn | pred | exp |    P |    R |    F1 |
+|             tp | fp |  fn | pred | exp |    P |    R |    F1 |
 |-------------|----|-----|------|-----|------|------|------|
 |       brand | 301 |  12 |   73 |  313 |  374 | 96.2% | 80.5% | 87.6% |
 |        drug | 1712 | 127 |  194 | 1839 | 1906 | 93.1% | 89.8% | 91.4% |
