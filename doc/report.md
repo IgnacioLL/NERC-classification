@@ -132,6 +132,8 @@ These are the accumulated step by step improvements made by each feature.
 | First four characters of tokens  | 71.7         |
 | Number of capital characters     | 74.1         |
 
+These are the specific metrics with all the features extracted.
+
 |             tp | fp |  fn | pred | exp |    P |    R |    F1 |
 |-------------|----|-----|------|-----|------|------|------|
 |       brand | 301 |  12 |   73 |  313 |  374 | 96.2% | 80.5% | 87.6% |
