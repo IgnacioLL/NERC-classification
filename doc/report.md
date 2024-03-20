@@ -57,7 +57,7 @@ Subsequently, we extracted the last character of each word to discern whether th
 
 Further refinement involved extracting the first four characters of tokens, particularly focusing on entities starting with "anti-," which contributed to a substantial enhancement in performance, yielding a F1 Score of 71.7%. Additionally, we identified the number of capital characters present in tokens, which often indicated the presence of abbreviations and improved the model's performance to 74.1% in F1 Score.
 
-Although we experimented with features such as the presence of numbers, dashes, and parentheses, none of them resulted in a notable improvement in the F1 Score. Therefore, adhering to the principle of parsimony, we retained only the features that demonstrated significant enhancements in the model's performance. In the experiments part we can see more clearly the results. 
+Although we experimented with features such as the presence of numbers, dashes, and parentheses, none of them resulted in a notable improvement in the F1 Score. Therefore, adhering to the principle of parsimony, we retained only the features that demonstrated significant enhancements in the model's performance. 
 
 ### Code 
 
@@ -79,9 +79,7 @@ def _first_character_is_upper(word):
 def _has_parentheses(word):
     return str(any(char in '()' for char in word))
 
-
 def extract_features(tokens) :
-
    # for each token, generate list of features and add it to the result
    result = []
    for k in range(0,len(tokens)):
@@ -97,7 +95,6 @@ def extract_features(tokens) :
       # tokenFeatures.append("dashes="+_contains_dashes(t))
       # tokenFeatures.append("parenthesis="+_has_parentheses(t))
       tokenFeatures.append("n_capital="+_count_uppercase_characters(t))
-
 
       if k>0 :
          tPrev = tokens[k-1][0]
@@ -116,8 +113,6 @@ def extract_features(tokens) :
       result.append(tokenFeatures)
     
    return result
-
-
 ```
 
 ## Experiments
@@ -134,14 +129,27 @@ These are the accumulated step by step improvements made by each feature.
 
 These are the specific metrics with all the features extracted.
 
-|    Category | tp | fp |  fn | pred | exp |    P |    R |    F1 |
-|-------------|----|-----|------|-----|------|------|------|
-|       brand | 301 |  12 |   73 |  313 |  374 | 96.2% | 80.5% | 87.6% |
-|        drug | 1712 | 127 |  194 | 1839 | 1906 | 93.1% | 89.8% | 91.4% |
-|      drug_n |  10 |   8 |   35 |   18 |   45 | 55.6% | 22.2% | 31.7% |
-|       group |  566 |  71 |  121 |  637 |  687 | 88.9% | 82.4% | 85.5% |
-|       M.avg |   - |   - |    - |    - |    - | 83.4% | 68.7% | 74.1% |
-|       m.avg | 2589 | 218 |  423 | 2807 | 3012 | 92.2% | 86.0% | 89.0% |
-| m.avg(no class) | 2643 | 164 |  369 | 2807 | 3012 | 94.2% | 87.7% | 90.8% |
+|    Category     |  tp  |  fp  |  fn  | pred |  exp |   P    |   R    |   F1   |
+|-----------------|------|------|------|------|------|--------|--------|--------|
+|       brand     |  301 |   12 |   73 |  313 |  374 | 96.2%  | 80.5%  | 87.6%  |
+|        drug     | 1712 |  127 |  194 | 1839 | 1906 | 93.1%  | 89.8%  | 91.4%  |
+|      drug_n     |   10 |    8 |   35 |   18 |   45 | 55.6%  | 22.2%  | 31.7%  |
+|       group     |  566 |   71 |  121 |  637 |  687 | 88.9%  | 82.4%  | 85.5%  |
+|       M.avg     |   -  |   -  |   -  |   -  |   -  | 83.4%  | 68.7%  | 74.1%  |
+|       m.avg     | 2589 |  218 |  423 | 2807 | 3012 | 92.2%  | 86.0%  | 89.0%  |
+| m.avg(no class) | 2643 |  164 |  369 | 2807 | 3012 | 94.2%  | 87.7%  | 90.8%  |
 
 
+## Conclusions
+
+In this project, we delved into the Named Entity Recognition and Classification (NERC) task with a focus on identifying and categorizing drug names within unstructured text data. Our approach centered on implementing a Sequence Tagging methodology using the B-I-O schema and leveraging a Conditional Random Fields (CRF) model, which demonstrated superior performance over other machine learning algorithms tested.
+
+Through experimentation with feature extraction and model optimization, we achieved significant improvements in the model's accuracy. Key features such as the number of capital characters in tokens and the first four characters of words were instrumental in enhancing the model's performance. Additionally, we meticulously tested various hyperparameters for the CRF model and fine-tuned the regularization parameter, aiming to optimize accuracy further.
+
+The final CRF model achieved an F1 Score of 74.1%, showcasing its ability to accurately classify entities into different categories when tested on a relevant dataset. These results underscore the critical role of feature extraction in NERC tasks and affirm the efficacy of the CRF algorithm for entity recognition within unstructured text data.
+
+However, it's important to note a significant area for improvement highlighted by our experiments: the classification of 'drug_n' entities. The model struggled with this category, primarily due to the limited instances of 'drug_n' in the training data and its similarity to the 'drug' category. This challenge underscores the need for more nuanced feature extraction and potentially more sophisticated modeling techniques to distinguish between closely related categories more effectively.
+
+Future directions for this project could include exploring additional features that could help differentiate between such closely related categories, optimizing hyperparameters even further, and investigating the application of deep learning techniques to enhance the model's performance. By addressing the specific challenge of 'drug_n' classification and continuing to refine our approach, we can work towards developing a more accurate and robust NERC system.
+
+Overall, this project serves as a valuable exploration into the application of machine learning techniques for entity recognition and classification in unstructured text data, highlighting both the achievements and the areas for improvement in the pursuit of more sophisticated NERC systems.
