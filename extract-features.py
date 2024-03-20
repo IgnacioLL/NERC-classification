@@ -55,6 +55,41 @@ def _first_character_is_upper(word):
 def _has_parentheses(word):
     return str(any(char in '()' for char in word))
 
+def extract_features2(tokens) :
+
+   # for each token, generate list of features and add it to the result
+   result = []
+   for k in range(0,len(tokens)):
+      tokenFeatures = [];
+      t = tokens[k][0]
+
+      tokenFeatures.append("lower_form="+str(t).lower())
+      tokenFeatures.append("suf3="+t[-3:])
+      tokenFeatures.append("suf1="+t[-1:])
+      tokenFeatures.append("token_len="+(str(len(t))))
+      tokenFeatures.append("prefix4="+t[:4])
+      # tokenFeatures.append("numbers="+_contains_numbers(t))
+      tokenFeatures.append("dashes="+_contains_dashes(t))
+      tokenFeatures.append("n_capital="+_count_uppercase_characters(t))
+      tokenFeatures.append("parenthesis="+_has_parentheses(t))
+
+      if k>0 :
+         tPrev = tokens[k-1][0]
+         tokenFeatures.append("formPrev="+tPrev)
+         tokenFeatures.append("suf3Prev="+tPrev[-3:])
+      else :
+         tokenFeatures.append("BoS")
+      if k<len(tokens)-1 :
+         tNext = tokens[k+1][0]
+         tokenFeatures.append("formNext="+tNext)
+         tokenFeatures.append("suf3Next="+tNext[-3:])
+      else:
+         tokenFeatures.append("EoS")
+    
+      result.append(tokenFeatures)
+    
+   return result
+
 def extract_features(tokens) :
 
    # for each token, generate list of features and add it to the result
@@ -68,10 +103,11 @@ def extract_features(tokens) :
       tokenFeatures.append("suf1="+t[-1:])
       tokenFeatures.append("token_len="+(str(len(t))))
       tokenFeatures.append("prefix4="+t[:4])
-      tokenFeatures.append("numbers="+_contains_numbers(t))
-      tokenFeatures.append("dashes="+_contains_dashes(t))
+      # tokenFeatures.append("numbers="+_contains_numbers(t))
+      # tokenFeatures.append("dashes="+_contains_dashes(t))
+      # tokenFeatures.append("parenthesis="+_has_parentheses(t))
       tokenFeatures.append("n_capital="+_count_uppercase_characters(t))
-      tokenFeatures.append("parenthesis="+_has_parentheses(t))
+
 
       if k>0 :
          tPrev = tokens[k-1][0]
@@ -90,6 +126,7 @@ def extract_features(tokens) :
       result.append(tokenFeatures)
     
    return result
+
 
 
 ## --------- MAIN PROGRAM ----------- 
